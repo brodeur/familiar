@@ -1,0 +1,105 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <!-- Place favicon.ico in the root directory -->
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="css/normalize.css"/>
+        <link rel="stylesheet" href="familiar.css"/>
+        <link rel="stylesheet" href="animate.css"/>
+        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="familiar.js"></script>
+    </head>
+    <body>
+      <div class="wrapper">
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+
+        <div style="text-align: center; padding-top: 200px;">
+          <button class="animated btn familiar inline" fmlr-stranger="Account information and settings" fmlr-friend="Account settings" fmlr-family="&nbsp;">Account information and settings</button>
+          <br/><br/>
+          <button id="goo" class="btn familiar">hayoooooo</button>
+        </div>
+        <div style="height:100px;"></div>
+
+
+        <div id="fmlr-console" class="animated bounceInUp">
+          <div id="fmlr-console-title">
+            Familiar 
+            <button class="fmlr-global selected">
+              <strong>Global</strong>
+            </button>
+            <button class="fmlr-local">
+              Local: <strong class="fmlr-id"></strong>
+            </button>
+            <div id="fmlr-console-close">&odash;</div>
+            <div id="fmlr-console-open">&oplus;</div>
+          </div>
+            <div class="fmlr-global-console">
+              <ul>
+                <li>
+                  <span>Total clicks</span>
+                  <span id="fmlr-console-total-session-clicks" class="fmlr-console-update"></span>
+                </li>
+                <li>
+                  <span>Decay threshold</span>
+                  <span id="fmlr-console-decay-threshold" class="fmlr-console-update"></span>
+                </li> 
+                <li>
+                  <span>Number of strangers</span>
+                  <span id="fmlr-console-num-strangers" class="fmlr-console-update"></span>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <span>Number of friends</span>
+                  <span id="fmlr-console-num-friends" class="fmlr-console-update"></span>
+                </li>
+                <li>
+                  <span>Number of family</span>
+                  <span id="fmlr-console-num-family" class="fmlr-console-update"></span>
+                </li>
+                <li>
+                  <span>Expiration date</span>
+                  <span id="fmlr-console-expiration" class="fmlr-console-update"></span>
+                </li>
+              </ul>
+            </div>
+            <div class="fmlr-local-console fmlr-hide">
+              <div class="fmlr-console-container" style="text-align: center;">
+                <div>
+                   <strong class="fmlr-id"></strong> has a familiarity level of <strong id="current-state"></strong> with <strong id="local-clicks"></strong> clicks
+                </div>
+              </div>
+              <div class="view-familiarity-level">
+                <button class="console-btn" id="set-stranger" state="stranger">Stranger</button>
+                <button class="console-btn" id="set-friend" state="friend">Friend</button>
+                <button class="console-btn" id="set-family" state="family">Family</button>
+              </div>
+            </div>
+        </div>
+        
+        
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+      <!--
+  <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+        </script>
+-->   </div>
+    </body>
+</html>
