@@ -13,19 +13,17 @@ FMLR = { // Familiar globals
   numFamily : 0,
   mostRecent : "",
   objects : {},
-  console : ""
+  console : "", // open or closed
+  consoleOn : true, // turn the console on to help with development
+  consoleLocation : "/familiar-console.js", // set the location of your familiar console
 };
 
-function fmlrSetUpConsole() {
-  $(".fmlr-local, .fmlr-global").click(function(){
-    $(".fmlr-local-console, .fmlr-global-console").toggleClass("fmlr-hide");
-    $(".fmlr-local, .fmlr-global").toggleClass("selected");
-  });
-}
 
-function fmlrSetConsoleMetric (fmlrId, fmlrMetricValue) {
-  $(fmlrId).toggleClass("fmlr-console-update fmlr-console-update-2")
-  $(fmlrId).html(fmlrMetricValue);
+if (FMLR.consoleOn == true) {	 // if the console is on, load the console script
+ fmlrConsole = document.createElement("script");
+ fmlrConsole.src = FMLR.consoleLocation;
+ fmlrConsole.lang = "text/javascript";
+ $("head").append(fmlrConsole);
 }
 
 function getPathTo(element) {
@@ -51,122 +49,6 @@ function getPageXY(element) { // TODO: This is not good enough, as element posit
         element= element.offsetParent;
     }
     return x + "_" + y;
-}
-
-function fmlrRefreshConsole(fmlrObj) {
-  if(fmlrObj) {
-    
-    $(".fmlr-id").html("#" + fmlrObj.fmlrId);
-    $("#current-state").html(fmlrObj.familiarityStatus);
-    $("#local-clicks").html(fmlrObj.clicks);
-    $("#set-stranger").attr("state-content", fmlrObj.stateContent.stranger);
-    $("#set-friend").attr("state-content", fmlrObj.stateContent.friend);
-    $("#set-family").attr("state-content", fmlrObj.stateContent.family);
-    $(".fmlr-local-console button").attr("fmlr-id", fmlrObj.fmlrId);
-    
-    $(".set-familiarity-level .selected, .view-familiarity-level .selected").removeClass("selected");
-    switch (fmlrObj.familiarityStatus) {
-      case "stranger":
-        $("#save-stranger, #set-stranger").addClass("selected");
-      break;
-      case "friend":
-        $("#save-friend, #set-friend").addClass("selected");
-      break;
-      case "family":
-        $("#save-family, #set-family").addClass("selected");
-      break;
-    }
-        
-    $(".view-familiarity-level button").click(function(){
-      var fmlrId = "#" + $(this).attr("fmlr-id");
-      var state = $(this).attr("state");
-      var stateContent = $(this).attr("state-content");
-      $(".view-familiarity-level button").removeClass("selected");
-      $(this).addClass("selected");
-      switch (state) {
-        case "stranger":
-          $(fmlrId).removeClass("family friend").addClass("stranger");
-          if (fmlrObj.hasAttributes) {
-            $(fmlrId).html(stateContent);
-          }
-        break;
-        case "friend":
-          $(fmlrId).removeClass("stranger family").addClass("friend");
-          if (fmlrObj.hasAttributes) {
-            $(fmlrId).html(stateContent);
-          }
-        break;
-        case "family":
-          $(fmlrId).removeClass("stranger friend").addClass("family");
-          if (fmlrObj.hasAttributes) {
-            $(fmlrId).html(stateContent);
-          }
-        break;
-      }
-    });
-    $(".set-familiarity-level button").click(function(){
-      $(".set-familiarity-level button").removeClass("selected");
-      $(this).addClass("selected");
-    });
-  }
-
-  fmlrSetConsoleMetric("#fmlr-console-familiarized", FMLR.familiarized);
-  fmlrSetConsoleMetric("#fmlr-console-expiration", FMLR.expiration);
-  fmlrSetConsoleMetric("#fmlr-console-decay-threshold", FMLR.decayThreshold);
-  fmlrSetConsoleMetric("#fmlr-console-most-recent-time", FMLR.mostRecentTime);
-  fmlrSetConsoleMetric("#fmlr-console-previous-time", FMLR.previousMostRecentTime)
-  fmlrSetConsoleMetric("#fmlr-console-total-session-clicks", FMLR.totalSessionClicks);
-  fmlrSetConsoleMetric("#fmlr-console-num-strangers", $('[fmlr-status="stranger"]').length);
-  fmlrSetConsoleMetric("#fmlr-console-num-friends", $('[fmlr-status="friend"]').length);
-  fmlrSetConsoleMetric("#fmlr-console-num-family", $('[fmlr-status="family"]').length);
-  fmlrSetConsoleMetric("#fmlr-most-recent", FMLR.mostRecent);
-}
-
-function fmlrUpdateConsoleMetrics(fmlrMetricName, fmlrMetricValue) {
-  switch (fmlrMetricName) {
-    case "click":
-      if (fmlrMetricValue) {
-        FMLR.totalSessionClicks = FMLR.totalSessionClicks + fmlrMetricValue;
-      } else {
-        FMLR.totalSessionClicks++;
-      }
-      fmlrSetConsoleMetric("#fmlr-console-total-session-clicks", FMLR.totalSessionClicks);
-    break;
-    case "most recent":
-      FMLR.mostRecent = fmlrMetricValue;
-      fmlrSetConsoleMetric("#fmlr-console-most-recent", FMLR.mostRecent);
-    break;
-    case "new stranger":
-      FMLR.numStrangers++;
-      fmlrSetConsoleMetric("#fmlr-console-num-strangers", FMLR.numStrangers);
-    break;
-    case "promote stranger":
-      FMLR.numStrangers--;
-      FMLR.numFriends++;
-      fmlrSetConsoleMetric("#fmlr-console-num-strangers", FMLR.numStrangers);
-      fmlrSetConsoleMetric("#fmlr-console-num-friends", FMLR.numFriends);
-    break;
-    case "promote friend":
-      FMLR.numFriends--;
-      FMLR.numFamily++;
-      fmlrSetConsoleMetric("#fmlr-console-num-friends", FMLR.numFriends);
-      fmlrSetConsoleMetric("#fmlr-console-num-family", FMLR.numFamily);
-    break;
-    
-    case "demote family":
-      FMLR.numFamily--;
-      FMLR.numFriends++;
-      fmlrSetConsoleMetric("#fmlr-console-num-friends", FMLR.numFriends);
-      fmlrSetConsoleMetric("#fmlr-console-num-family", FMLR.numFamily);
-    break;
-    
-    case "demote friend":
-      FMLR.numFriends--;
-      FMLR.numStrangers++;
-      fmlrSetConsoleMetric("#fmlr-console-num-strangers", FMLR.numStrangers);
-      fmlrSetConsoleMetric("#fmlr-console-num-friends", FMLR.numFriends);
-    break;
-  }
 }
 
 function fmlrSaveGlobals() {
@@ -204,30 +86,26 @@ function fmlrCheckCookie (cookieName) {
 }
 
 $(document).ready(function(){
-  fmlrSetUpConsole();
+  if (FMLR.consoleOn == true) {
+    fmlrSetUpConsole();
+  }
   if(fmlrCheckCookie("FMLR") === true) {
     fmlrGetGlobals();
-    fmlrRefreshConsole();
+    if (FMLR.consoleOn == true) {
+      fmlrRefreshConsole();
+    }
   } else {
     FMLR.previousMostRecentTime = new Date();
     FMLR.familiarized = true;
     fmlrSaveGlobals();
-    fmlrRefreshConsole();
+    if (FMLR.consoleOn == true) {
+      fmlrRefreshConsole();
+    }   
   }
   
-  if(FMLR.console == "closed") {
+  if(FMLR.consoleOn === true && FMLR.console == "closed") {
     $("#fmlr-console").removeClass("bounceInUp").addClass("bounceOutDown");
   }
-  
-  $("#fmlr-console-close, #fmlr-console-open").click(function(){
-    $("#fmlr-console").toggleClass("bounceInUp bounceOutDown");
-    if($("#fmlr-console").hasClass("bounceOutDown")) {
-      FMLR.console = "closed";    
-    } else {
-      FMLR.console = "open";
-    }
-    fmlrSaveGlobals();
-  });
     
   $(".btn").hover(function(){
     $(this).toggleClass("pulse");
@@ -321,15 +199,19 @@ $(document).ready(function(){
     }
           
     $(this).click(function(){
-      fmlrUpdateConsoleMetrics("click");
-      fmlrUpdateConsoleMetrics("most recent", this.id);
+      if (FMLR.consoleOn == true) {
+        fmlrUpdateConsoleMetrics("click");
+        fmlrUpdateConsoleMetrics("most recent", this.id);
+      }
       fmlr.clicks = fmlr.clicks + 1; // Items with attributes are clickable.
       if (fmlr.clicks < FMLR.thresholds.promoteStranger) { // Less than 2 clicks is a stranger TODO: Make these click intervals constants
-        
-        if (fmlr.familiarityStatus == "friend") { //if currently a friend a familiarity decay event must have been triggered. demoting to stranger!
-          fmlrUpdateConsoleMetrics("demote friend");
-        } else if (fmlr.familiarityStatus != "stranger") {
-          fmlrUpdateConsoleMetrics("new stranger"); // otherwise this is a new stranger
+
+        if (FMLR.consoleOn == true) {
+          if (fmlr.familiarityStatus == "friend") { //if currently a friend a familiarity decay event must have been triggered. demoting to stranger!
+            fmlrUpdateConsoleMetrics("demote friend");
+          } else if (fmlr.familiarityStatus != "stranger") {
+            fmlrUpdateConsoleMetrics("new stranger"); // otherwise this is a new stranger
+          }
         }
         
         fmlr.familiarityStatus = "stranger";
@@ -342,11 +224,13 @@ $(document).ready(function(){
         $(this).addClass("stranger"); // set the class of the object.. TODO: use global for this familiarity level
 
       } else if (fmlr.clicks >= FMLR.thresholds.promoteStranger && fmlr.clicks < FMLR.thresholds.promoteFriend) { // 2-5 clicks is a friend
-        
-        if(fmlr.familiarityStatus == "stranger") { // if currently a stranger that means we're upgrading from stranger to friend
-          fmlrUpdateConsoleMetrics("promote stranger");
-        } else if (fmlr.familiarityStatus == "family") { // if currently a family member it means a decay event has been triggered and we're going back to being friends
-          fmlrUpdateConsoleMetrics("demote family"); 
+
+        if (FMLR.consoleOn == true) {
+          if(fmlr.familiarityStatus == "stranger") { // if currently a stranger that means we're upgrading from stranger to friend
+            fmlrUpdateConsoleMetrics("promote stranger");
+          } else if (fmlr.familiarityStatus == "family") { // if currently a family member it means a decay event has been triggered and we're going back to being friends
+            fmlrUpdateConsoleMetrics("demote family"); 
+          }
         }
 
         fmlr.familiarityStatus = "friend"; // set the current state to friend
@@ -360,7 +244,7 @@ $(document).ready(function(){
 
       } else if (fmlr.clicks >= FMLR.thresholds.promoteFriend) { // More than 5 clicks is family
 
-        if (fmlr.familiarityStatus == "friend") { // promote to family if it's a friend!
+        if (FMLR.consoleOn == true && fmlr.familiarityStatus == "friend") { // promote to family if it's a friend!
           fmlrUpdateConsoleMetrics("promote friend");
         }
 
@@ -374,12 +258,14 @@ $(document).ready(function(){
         $(this).removeClass("stranger, friend"); // remove other possible           
       }
       $(this).attr("fmlr-status", fmlr.familiarityStatus);
-      fmlrRefreshConsole(fmlr);
+      if (FMLR.consoleOn == true) {
+        fmlrRefreshConsole(fmlr);
+      }
       fmlrSaveGlobals(); // TODO: Figure out best places to save globals
       fmlrSetCookie (fmlr.xPath, JSON.stringify(fmlr), FMLR.expiration); // save the cookie after the click
     });
-    
-    fmlrRefreshConsole(fmlr); // TODO: Figure out best places to refresh console
-    
+    if (FMLR.consoleOn == true) {
+      fmlrRefreshConsole(fmlr); // TODO: Figure out best places to refresh console
+    }
   });
 });

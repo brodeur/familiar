@@ -1,0 +1,55 @@
+<div id="fmlr-console" class="animated bounceInUp">
+  <div id="fmlr-console-title">
+    Familiar 
+    <button class="fmlr-global selected">
+      <strong>Global</strong>
+    </button>
+    <button class="fmlr-local">
+      Local: <strong class="fmlr-id"></strong>
+    </button>
+    <div id="fmlr-console-close">&odash;</div>
+    <div id="fmlr-console-open">&oplus;</div>
+  </div>
+    <div class="fmlr-global-console">
+      <ul>
+        <li>
+          <span>Total clicks</span>
+          <span id="fmlr-console-total-session-clicks" class="fmlr-console-update"></span>
+        </li>
+        <li>
+          <span>Decay threshold</span>
+          <span id="fmlr-console-decay-threshold" class="fmlr-console-update"></span>
+        </li> 
+        <li>
+          <span>Number of strangers</span>
+          <span id="fmlr-console-num-strangers" class="fmlr-console-update"></span>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <span>Number of friends</span>
+          <span id="fmlr-console-num-friends" class="fmlr-console-update"></span>
+        </li>
+        <li>
+          <span>Number of family</span>
+          <span id="fmlr-console-num-family" class="fmlr-console-update"></span>
+        </li>
+        <li>
+          <span>Expiration date</span>
+          <span id="fmlr-console-expiration" class="fmlr-console-update"></span>
+        </li>
+      </ul>
+    </div>
+    <div class="fmlr-local-console fmlr-hide">
+      <div class="fmlr-console-container" style="text-align: center;">
+        <div>
+           <strong class="fmlr-id"></strong> has a familiarity level of <strong id="current-state"></strong> with <strong id="local-clicks"></strong> clicks
+        </div>
+      </div>
+      <div class="view-familiarity-level">
+        <button class="console-btn" id="set-stranger" state="stranger">Stranger</button>
+        <button class="console-btn" id="set-friend" state="friend">Friend</button>
+        <button class="console-btn" id="set-family" state="family">Family</button>
+      </div>
+    </div>
+</div>
