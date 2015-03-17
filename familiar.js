@@ -86,21 +86,15 @@ function fmlrCheckCookie (cookieName) {
 }
 
 $(document).ready(function(){
-  if (FMLR.consoleOn == true) {
-    fmlrSetUpConsole();
-  }
+  fmlrSetUpConsole("init");
   if(fmlrCheckCookie("FMLR") === true) {
     fmlrGetGlobals();
-    if (FMLR.consoleOn == true) {
-      fmlrRefreshConsole();
-    }
+    fmlrSetUpConsole("refresh");
   } else {
     FMLR.previousMostRecentTime = new Date();
     FMLR.familiarized = true;
     fmlrSaveGlobals();
-    if (FMLR.consoleOn == true) {
-      fmlrRefreshConsole();
-    }   
+    fmlrSetUpConsole("refresh");
   }
   
   if(FMLR.consoleOn === true && FMLR.console == "closed") {
@@ -258,14 +252,10 @@ $(document).ready(function(){
         $(this).removeClass("stranger, friend"); // remove other possible           
       }
       $(this).attr("fmlr-status", fmlr.familiarityStatus);
-      if (FMLR.consoleOn == true) {
-        fmlrRefreshConsole(fmlr);
-      }
+      fmlrSetUpConsole("refresh", fmlr);
       fmlrSaveGlobals(); // TODO: Figure out best places to save globals
       fmlrSetCookie (fmlr.xPath, JSON.stringify(fmlr), FMLR.expiration); // save the cookie after the click
     });
-    if (FMLR.consoleOn == true) {
-      fmlrRefreshConsole(fmlr); // TODO: Figure out best places to refresh console
-    }
+      fmlrSetUpConsole("refresh", fmlr);
   });
 });
