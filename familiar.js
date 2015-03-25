@@ -141,6 +141,7 @@ $(document).ready(function(){
       }
       familiarityStatus = fmlr.familiarityStatus;
       $(this).attr("fmlr-status", familiarityStatus);
+      $(this).addClass(familiarityStatus);
       
       if (!fmlr.fmlrId) { // if there isn't an id generate a unique one
         fmlr.fmlrId = "fmlrId-" + (Math.floor((Math.random() * 10000) + 1)); // TODO: Check other IDs to make sure there isn't a duplicate
